@@ -410,6 +410,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
                 </Property>
+                <Property name="name" type="java.lang.String" value="codigo_fornecedor" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="txtnome">
@@ -449,6 +450,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="0"/>
                 </Property>
+                <Property name="name" type="java.lang.String" value="complemento_fornecedor" noResource="true"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JFormattedTextField" name="txtbairro">
@@ -652,12 +654,13 @@
               <SubComponents>
                 <Component class="javax.swing.JTable" name="tabelaFornecedores">
                   <Properties>
+                    <Property name="autoCreateRowSorter" type="boolean" value="true"/>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Tahoma" size="14" style="0"/>
                     </Property>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="13" rowCount="0">
-                        <Column editable="true" title="C&#xf3;digo" type="java.lang.Object"/>
+                        <Column editable="true" title="C&#xf3;digo" type="java.lang.Integer"/>
                         <Column editable="true" title="Nome" type="java.lang.Object"/>
                         <Column editable="true" title="CNPJ" type="java.lang.Object"/>
                         <Column editable="true" title="E-mail" type="java.lang.Object"/>
@@ -665,7 +668,7 @@
                         <Column editable="true" title="Celular" type="java.lang.Object"/>
                         <Column editable="true" title="Cep" type="java.lang.Object"/>
                         <Column editable="true" title="Endere&#xe7;o" type="java.lang.Object"/>
-                        <Column editable="true" title="N&#xba;" type="java.lang.Object"/>
+                        <Column editable="true" title="N&#xba;" type="java.lang.Integer"/>
                         <Column editable="true" title="Comp" type="java.lang.Object"/>
                         <Column editable="true" title="Bairro" type="java.lang.Object"/>
                         <Column editable="true" title="Cidade" type="java.lang.Object"/>

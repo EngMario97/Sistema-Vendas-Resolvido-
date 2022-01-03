@@ -199,6 +199,7 @@ public class FrmEstoque extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Produtos"));
 
+        tabelaProdutos.setAutoCreateRowSorter(true);
         tabelaProdutos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tabelaProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -207,7 +208,15 @@ public class FrmEstoque extends javax.swing.JFrame {
             new String [] {
                 "Código", "Descrição", "Preço", "Qtd. Estoque", "Fornecedor"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Float.class, java.lang.Integer.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         tabelaProdutos.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaProdutosMouseClicked(evt);
@@ -330,6 +339,7 @@ public class FrmEstoque extends javax.swing.JFrame {
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         listar();
+        tabelaProdutos.setAutoCreateRowSorter(true);
     }//GEN-LAST:event_formWindowActivated
 
     /**

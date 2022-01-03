@@ -195,6 +195,7 @@ public class FrmFornecedores extends javax.swing.JFrame {
 
         txtcodigo.setEditable(false);
         txtcodigo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtcodigo.setName("codigo_fornecedor"); // NOI18N
 
         txtnome.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtnome.addActionListener(new java.awt.event.ActionListener() {
@@ -211,6 +212,7 @@ public class FrmFornecedores extends javax.swing.JFrame {
         txtend.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         txtcomplemento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtcomplemento.setName("complemento_fornecedor"); // NOI18N
 
         txtbairro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -416,6 +418,7 @@ public class FrmFornecedores extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
 
+        tabelaFornecedores.setAutoCreateRowSorter(true);
         tabelaFornecedores.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tabelaFornecedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -424,7 +427,15 @@ public class FrmFornecedores extends javax.swing.JFrame {
             new String [] {
                 "Código", "Nome", "CNPJ", "E-mail", "Telefone", "Celular", "Cep", "Endereço", "Nº", "Comp", "Bairro", "Cidade", "UF"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         tabelaFornecedores.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaFornecedoresMouseClicked(evt);
@@ -647,7 +658,10 @@ public class FrmFornecedores extends javax.swing.JFrame {
 
     private void btnsalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalvarActionPerformed
         // boto salvar
-
+        
+        Utilitarios checagem = new Utilitarios();
+        
+        if(checagem.isAllFilled(painel_dados)) {
         Fornecedores obj = new Fornecedores();
 
         obj.setNome(txtnome.getText());
@@ -662,18 +676,22 @@ public class FrmFornecedores extends javax.swing.JFrame {
         obj.setBairro(txtbairro.getText());
         obj.setCidade(txtcidade.getText());
         obj.setUf(cbuf.getSelectedItem().toString());
+        
 
         FornecedoresDAO dao = new FornecedoresDAO();
 
         dao.cadastrarFornecedores(obj);
         new Utilitarios().LimpaTela(painel_dados);
+        } else {
+            JOptionPane.showMessageDialog(null, "Favor preencher campos obrigatórios.");
+        }
 
     }//GEN-LAST:event_btnsalvarActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         // Carrega a lista
         listar();
-
+        tabelaFornecedores.setAutoCreateRowSorter(true);
     }//GEN-LAST:event_formWindowActivated
 
     private void tabelaFornecedoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaFornecedoresMouseClicked

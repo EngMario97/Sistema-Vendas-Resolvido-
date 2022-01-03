@@ -124,6 +124,11 @@ public class FrmVendas extends javax.swing.JFrame {
 
         btncancelar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btncancelar.setText("CANCELAR VENDA");
+        btncancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btncancelarMouseClicked(evt);
+            }
+        });
         btncancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btncancelarActionPerformed(evt);
@@ -340,6 +345,7 @@ public class FrmVendas extends javax.swing.JFrame {
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Carrinho de compras"));
 
+        tabelaItens.setAutoCreateRowSorter(true);
         tabelaItens.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -347,7 +353,15 @@ public class FrmVendas extends javax.swing.JFrame {
             new String [] {
                 "Código", "Produto", "Qtd", "Preço", "Subtotal"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Float.class, java.lang.Float.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tabelaItens);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -515,10 +529,10 @@ public class FrmVendas extends javax.swing.JFrame {
         carrinho = (DefaultTableModel) tabelaItens.getModel();
         
          carrinho.addRow(new Object[]{
-             txtcodigo.getText(),
+             Integer.parseInt(txtcodigo.getText()),
              txtdescricao.getText(),
-             txtqtd.getText(),
-             txtpreco.getText(),
+             Integer.parseInt(txtqtd.getText()),
+             Double.parseDouble(txtpreco.getText()),
              subtotal           
             });
       
@@ -577,6 +591,15 @@ public class FrmVendas extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_txtcodigoKeyPressed
+
+    private void btncancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btncancelarMouseClicked
+        int op = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja"
+                + " cancelar a venda?");
+        
+        if(op == 0) {
+            this.dispose();
+        }
+    }//GEN-LAST:event_btncancelarMouseClicked
 
     /**
      * @param args the command line arguments

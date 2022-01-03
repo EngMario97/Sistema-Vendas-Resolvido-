@@ -12,7 +12,6 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
 /**
@@ -25,31 +24,10 @@ public class Utilitarios {
     public void LimpaTela(JPanel container) {
         Component components[] = container.getComponents();
         for (Component component : components) {
-            if (component instanceof JSplitPane) {
-                System.out.println("-> " + ((JTextField) ((JSplitPane) component).getLeftComponent()).getText());
-                ((JTextField) ((JSplitPane) component).getLeftComponent()).setText(null);
-            }
-            
             if (component instanceof JTextField) {
                 ((JTextField) component).setText(null);
             }
         }
-    }
-    
-    // metodo para verificar se os campos estão limpos
-    public boolean verificaLimpo(JPanel container) {
-        boolean bool = true;
-        Component components[] = container.getComponents();
-        for (Component component : components) {
-            System.out.println("->" + component.getName());
-            if (component instanceof JTextField && component.getName() != null && (component.getName().equals("cod"))) {
-                if (((JTextField) component).getText().isEmpty()) {
-                    bool = false;
-                    break;
-                }
-            }
-        }
-        return bool;
     }
 
     //Metodo para adicionar imagem de fundo JDesktopPane
@@ -64,5 +42,18 @@ public class Utilitarios {
 //            }
 //
 //        }
-                
+               
+    public boolean isAllFilled(JPanel container) {
+        boolean bool = true;
+        Component components[] = container.getComponents();
+        for (Component component : components) {
+            if (component instanceof JTextField && component.getName() == null) {
+                if (((JTextField) component).getText().isEmpty()) {
+                    bool = false;
+                    break;
+                }
+            }
+        }
+        return bool;
+    }
                 }

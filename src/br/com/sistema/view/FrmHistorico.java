@@ -147,6 +147,7 @@ public class FrmHistorico extends javax.swing.JFrame {
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
+        tabelaHistorico.setAutoCreateRowSorter(true);
         tabelaHistorico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -154,7 +155,15 @@ public class FrmHistorico extends javax.swing.JFrame {
             new String [] {
                 "Código", "Data da Venda", "Cliente", "Total da Venda", "Obs"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Float.class, java.lang.Object.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         tabelaHistorico.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tabelaHistoricoMouseClicked(evt);
