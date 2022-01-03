@@ -14,6 +14,18 @@ import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import java.util.Properties;
+import javax.mail.Address;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.swing.JOptionPane;
+
+
 /**
  *
  * @author Tampelini
@@ -56,4 +68,48 @@ public class Utilitarios {
         }
         return bool;
     }
-                }
+    
+
+public static void JavaEmail(String email, String senha) {
+    Properties props = new Properties();
+    /** Parâmetros de conexão com servidor Gmail */
+    props.put("mail.smtp.host", "smtp.gmail.com");
+    props.put("mail.smtp.socketFactory.port", "587");
+    props.put("mail.smtp.socketFactory.class",
+    "javax.net.ssl.SSLSocketFactory");
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.port", "587");
+
+    Session session = Session.getDefaultInstance(props,
+      new javax.mail.Authenticator() {
+           protected PasswordAuthentication getPasswordAuthentication()
+           {
+                 return new PasswordAuthentication("univelaluno@gmail.com", "Aluno123456");
+           }
+      });
+
+    /** Ativa Debug para sessão */
+    session.setDebug(true);
+
+    try {
+
+      Message message = new MimeMessage(session);
+      message.setFrom(new InternetAddress("univelaluno@gmail.com"));
+      //Remetente
+
+      Address[] toUser = InternetAddress.parse(email);
+
+      message.setRecipients(Message.RecipientType.TO, toUser);
+      message.setSubject("Enviando email com JavaMail");//Assunto
+      message.setText("Sua nova senha é: " + senha);
+      /**Método para enviar a mensagem criada*/
+      Transport.send(message);
+
+        JOptionPane.showMessageDialog(null, "Email enviado!");
+
+     } catch (MessagingException e) {
+        throw new RuntimeException(e);
+    }
+  }
+}
+

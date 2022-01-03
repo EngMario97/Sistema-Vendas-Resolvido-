@@ -8,6 +8,7 @@ package br.com.sistema.dao;
 import br.com.sistema.jdbc.ConnectionFactory;
 
 import br.com.sistema.model.Funcionarios;
+import br.com.sistema.model.Utilitarios;
 import br.com.sistema.view.FrmLogin;
 import br.com.sistema.view.Frmmenu;
 import java.sql.Connection;
@@ -332,4 +333,22 @@ public class FuncionariosDAO {
 
     }
 
+    public void alteraSenha (String email, String senha){
+        try{
+        //1 passo - SQL
+            String sql = "UPDATE tb_funcionarios set senha = ? where email = ?;";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, senha);
+            stmt.setString(2, email);
+            
+            stmt.executeUpdate();
+            
+            Utilitarios mail = new Utilitarios();
+            
+            mail.JavaEmail(email, senha);
+            
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro : " + erro);
+        }
+        }
 }
