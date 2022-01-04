@@ -3,12 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/paulo/OneDrive/Documentos/Biopark/Orientação%20a%20Objetos/Projeto%20Master/Sistema%20Vendas%20(Resolvido)/src/br/com/sistema/view/FrmProdutos.java</file>
-            <file>file:/C:/Users/paulo/OneDrive/Documentos/Biopark/Orientação%20a%20Objetos/Projeto%20Master/Sistema%20Vendas%20(Resolvido)/src/br/com/sistema/view/Frmclientes.java</file>
-            <file>file:/C:/Users/paulo/OneDrive/Documentos/Biopark/Orientação%20a%20Objetos/Projeto%20Master/Sistema%20Vendas%20(Resolvido)/src/br/com/sistema/view/FrmDetalheVenda.java</file>
-            <file>file:/C:/Users/paulo/OneDrive/Documentos/Biopark/Orientação%20a%20Objetos/Projeto%20Master/Sistema%20Vendas%20(Resolvido)/src/br/com/sistema/model/Clientes.java</file>
-            <file>file:/C:/Users/paulo/OneDrive/Documentos/Biopark/Orientação%20a%20Objetos/Projeto%20Master/Sistema%20Vendas%20(Resolvido)/src/br/com/sistema/view/FrmHistorico.java</file>
-            <file>file:/C:/Users/paulo/OneDrive/Documentos/Biopark/Orientação%20a%20Objetos/Projeto%20Master/Sistema%20Vendas%20(Resolvido)/src/br/com/sistema/view/FrmPagamentos.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/Sistema-Vendas-Resolvido-/src/br/com/sistema/model/Utilitarios.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/Sistema-Vendas-Resolvido-/src/br/com/sistema/view/FrmRecuperarSenha.java</file>
+            <file>file:/C:/Users/Asus/Documents/NetBeansProjects/Sistema-Vendas-Resolvido-/src/br/com/sistema/dao/FuncionariosDAO.java</file>
         </group>
     </open-files>
 </project-private>

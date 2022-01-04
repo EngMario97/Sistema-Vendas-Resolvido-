@@ -348,7 +348,7 @@ public class FuncionariosDAO {
             mail.JavaEmail(email, senha);
             
         } catch (SQLException erro) {
-            JOptionPane.showMessageDialog(null, "Erro : " + erro);
+            JOptionPane.showMessageDialog(null, "Erro: " + erro);
         }
         }
 }

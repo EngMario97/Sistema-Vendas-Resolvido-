@@ -72,40 +72,64 @@ public class Utilitarios {
 
 public static void JavaEmail(String email, String senha) {
     Properties props = new Properties();
-    /** Parâmetros de conexão com servidor Gmail */
+    /** Parâmetros de conexão com servidor Gmail
     props.put("mail.smtp.host", "smtp.gmail.com");
-    props.put("mail.smtp.socketFactory.port", "587");
+    props.put("mail.smtp.socketFactory.port", "465");
     props.put("mail.smtp.socketFactory.class",
     "javax.net.ssl.SSLSocketFactory");
     props.put("mail.smtp.auth", "true");
-    props.put("mail.smtp.port", "587");
-
+    props.put("mail.smtp.port", "465");
+    */
+    
+    String stmpport = "465";
+    
+    String  d_email = "sistemavendasbiopark@gmail.com",
+        d_uname = "email",
+        d_password = "password",
+        d_host = "smtp.gmail.com",
+        d_port  = "465", //465,587
+        m_to = email,
+        m_subject = "Testing",
+        m_text = "Sua nova senha é:" + senha;
+    
+    props.put("mail.smtp.user", d_email);
+    props.put("mail.smtp.host", d_host);
+    props.put("mail.smtp.port", d_port);
+    props.put("mail.smtp.starttls.enable","true");
+    props.put("mail.smtp.debug", "true");
+    props.put("mail.smtp.auth", "true");
+    props.put("mail.smtp.socketFactory.port", d_port);
+    props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+    props.put("mail.smtp.socketFactory.fallback", "false");
+    
     Session session = Session.getDefaultInstance(props,
       new javax.mail.Authenticator() {
            protected PasswordAuthentication getPasswordAuthentication()
            {
-                 return new PasswordAuthentication("univelaluno@gmail.com", "Aluno123456");
+                 return new PasswordAuthentication("sistemavendasbiopark@gmail.com", "biopark123");
            }
       });
+    
 
     /** Ativa Debug para sessão */
     session.setDebug(true);
 
     try {
 
-      Message message = new MimeMessage(session);
-      message.setFrom(new InternetAddress("univelaluno@gmail.com"));
-      //Remetente
-
-      Address[] toUser = InternetAddress.parse(email);
-
-      message.setRecipients(Message.RecipientType.TO, toUser);
-      message.setSubject("Enviando email com JavaMail");//Assunto
-      message.setText("Sua nova senha é: " + senha);
-      /**Método para enviar a mensagem criada*/
-      Transport.send(message);
-
-        JOptionPane.showMessageDialog(null, "Email enviado!");
+    Message msg = new MimeMessage(session);
+    msg.setText(m_text);
+    msg.setSubject(m_subject);
+    msg.setFrom(new InternetAddress(d_email));
+    msg.addRecipient(Message.RecipientType.TO, new InternetAddress(m_to));
+      
+    Address[] toUser = InternetAddress.parse(email);
+    
+    Transport transport = session.getTransport("smtps");
+    transport.connect(d_host, 465, d_uname, d_password);
+    transport.sendMessage(msg, toUser);
+    transport.close();
+    
+    JOptionPane.showMessageDialog(null, "Email enviado!");
 
      } catch (MessagingException e) {
         throw new RuntimeException(e);
