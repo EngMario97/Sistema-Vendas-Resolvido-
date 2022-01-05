@@ -70,7 +70,7 @@ public class Utilitarios {
     }
     
 
-public static void JavaEmail(String email, String senha) {
+public void JavaEmail(String email, String senha) {
     Properties props = new Properties();
     /** Parâmetros de conexão com servidor Gmail
     props.put("mail.smtp.host", "smtp.gmail.com");

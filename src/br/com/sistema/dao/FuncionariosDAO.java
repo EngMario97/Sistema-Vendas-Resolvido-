@@ -333,7 +333,7 @@ public class FuncionariosDAO {
 
     }
 
-    public void alteraSenha (String email, String senha){
+    public void recuperaSenha (String email, String senha){
         try{
         //1 passo - SQL
             String sql = "UPDATE tb_funcionarios set senha = ? where email = ?;";
@@ -350,5 +350,44 @@ public class FuncionariosDAO {
         } catch (SQLException erro) {
             JOptionPane.showMessageDialog(null, "Erro: " + erro);
         }
+    }
+    
+    public Funcionarios verificaSenha (String senhaatual) {
+        try{
+           
+            String sql = "select senha from tb_funcionarios where senha = ?;";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, senhaatual);
+            
+            ResultSet rs = stmt.executeQuery();
+            Funcionarios obj = new Funcionarios();
+            
+            if (rs.next()) {
+                obj.setSenha(rs.getString("senha"));
+            }
+            
+            System.out.println(obj.getSenha());
+            
+            return obj;
+            
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro: " + erro);
+            return null;
         }
+    }
+    
+    public void alteraSenha(String senhaatual, String senhanova){
+        try{
+        //1 passo - SQL
+            String sql = "UPDATE tb_funcionarios set senha = ? where senha = ?;";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, senhanova);
+            stmt.setString(2, senhaatual);
+            
+            stmt.executeUpdate();
+           
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro: " + erro);
+        }
+    }
 }

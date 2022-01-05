@@ -112,7 +112,13 @@ public class FrmRecuperarSenha extends javax.swing.JFrame {
            
             FuncionariosDAO dao = new FuncionariosDAO();
             
-            dao.alteraSenha(email, senha);
+            dao.recuperaSenha(email, senha);
+            
+            FrmLogin telalogin = new FrmLogin();
+
+            this.dispose();
+
+            telalogin.setVisible(true);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "erro");
         }
