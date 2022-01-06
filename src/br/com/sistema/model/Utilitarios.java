@@ -81,11 +81,10 @@ public void JavaEmail(String email, String senha) {
     props.put("mail.smtp.port", "465");
     */
     
-    String stmpport = "465";
+    int stmpport = 465;
     
     String  d_email = "sistemavendasbiopark@gmail.com",
-        d_uname = "email",
-        d_password = "password",
+        d_password = "biopark123",
         d_host = "smtp.gmail.com",
         d_port  = "465", //465,587
         m_to = email,
@@ -96,40 +95,44 @@ public void JavaEmail(String email, String senha) {
     props.put("mail.smtp.host", d_host);
     props.put("mail.smtp.port", d_port);
     props.put("mail.smtp.starttls.enable","true");
+    props.put("mail.smtp.ssl.trust", d_host);
     props.put("mail.smtp.debug", "true");
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.socketFactory.port", d_port);
     props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
     props.put("mail.smtp.socketFactory.fallback", "false");
+    props.put("mail.transport.protocol", "smtp");
+    props.put("mail.debug", true);
     
-    Session session = Session.getDefaultInstance(props,
+    Session session = Session.getInstance(props,
       new javax.mail.Authenticator() {
+          @Override
            protected PasswordAuthentication getPasswordAuthentication()
            {
-                 return new PasswordAuthentication("sistemavendasbiopark@gmail.com", "biopark123");
+                 return new PasswordAuthentication(d_email, d_password);
            }
       });
     
 
     /** Ativa Debug para sessão */
     session.setDebug(true);
-
+    
     try {
+    
+        Message msg = new MimeMessage(session);
+        msg.setText(m_text);
+        msg.setSubject(m_subject);
+        msg.setFrom(new InternetAddress(d_email));
+        msg.setRecipient(Message.RecipientType.TO, new InternetAddress(m_to));
 
-    Message msg = new MimeMessage(session);
-    msg.setText(m_text);
-    msg.setSubject(m_subject);
-    msg.setFrom(new InternetAddress(d_email));
-    msg.addRecipient(Message.RecipientType.TO, new InternetAddress(m_to));
-      
-    Address[] toUser = InternetAddress.parse(email);
-    
-    Transport transport = session.getTransport("smtps");
-    transport.connect(d_host, 465, d_uname, d_password);
-    transport.sendMessage(msg, toUser);
-    transport.close();
-    
-    JOptionPane.showMessageDialog(null, "Email enviado!");
+        Address[] toUser = InternetAddress.parse(email);
+        
+        Transport transport = session.getTransport("smtps");
+        transport.connect (d_host, stmpport, d_email, d_password);
+        transport.sendMessage(msg, msg.getAllRecipients());
+        transport.close();  
+
+        JOptionPane.showMessageDialog(null, "Email enviado!");
 
      } catch (MessagingException e) {
         throw new RuntimeException(e);
