@@ -773,13 +773,12 @@ public class Frmclientes extends javax.swing.JFrame {
 
     private void txtnomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnomeActionPerformed
         // TODO add your handling code here:
+        
+        pesquisar();
     }//GEN-LAST:event_txtnomeActionPerformed
 
     private void btnsalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalvarActionPerformed
         // botão salvar
-
-
-
     }//GEN-LAST:event_btnsalvarActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -893,23 +892,6 @@ public class Frmclientes extends javax.swing.JFrame {
 
     private void txtnomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnomeKeyPressed
         // TODO add your handling code here:
-        //botao pesquisar
-        Action pesquisarAction = new AbstractAction("pesquisar"){
-            @Override
-            public void actionPerformed(ActionEvent e){
-                
-                pesquisar();
-            }
-
-           
-        };
-        
-        String key = "pesquisar";
-        
-        btnbusca.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,KeyEvent.CTRL_DOWN_MASK), key);
-        btnbusca.getActionMap().put(key, pesquisarAction);
-        
-        this.getContentPane().setBackground(Color.WHITE);
     }//GEN-LAST:event_txtnomeKeyPressed
 
     /**
