@@ -7,8 +7,14 @@ package br.com.sistema.view;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -20,6 +26,30 @@ public class Frmmenu extends javax.swing.JFrame {
     public Frmmenu() {
         initComponents();
 
+        Action sairAction = new AbstractAction("sair"){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+                sair();
+            }
+
+           
+        };
+        
+        String key = "sair";
+        
+        jMenu7.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.CTRL_DOWN_MASK), key);
+        jMenu7.getActionMap().put(key, sairAction);
+        }
+
+    private void sair(){
+        int op;
+
+        op = JOptionPane.showConfirmDialog(null, "Você tem certeza que desja sair?");
+
+        if (op == 0) {
+            System.exit(0);
+        }
     }
 
     public void setUsuarioLogado(String nome) {
@@ -281,13 +311,7 @@ public class Frmmenu extends javax.swing.JFrame {
 
     private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
 
-        int op;
-
-        op = JOptionPane.showConfirmDialog(null, "Você tem certeza que desja sair?");
-
-        if (op == 0) {
-            System.exit(0);
-        }
+    sair();
 
     }//GEN-LAST:event_jMenu7MouseClicked
 
