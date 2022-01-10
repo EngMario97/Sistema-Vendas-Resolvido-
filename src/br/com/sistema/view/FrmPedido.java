@@ -3,9 +3,22 @@ package br.com.sistema.view;
 
 import br.com.sistema.dao.ProdutosDAO;
 import br.com.sistema.model.Produtos;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Desktop;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import org.dom4j.Document;
 
 /**
  *
@@ -70,7 +83,7 @@ public class FrmPedido extends javax.swing.JFrame {
         txtQtd = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbCarrinhoPedido = new javax.swing.JTable();
-        jButton2 = new javax.swing.JButton();
+        btnGerarPedido = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -181,8 +194,13 @@ public class FrmPedido extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(tbCarrinhoPedido);
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton2.setText("Gerar Pedido");
+        btnGerarPedido.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnGerarPedido.setText("Gerar Pedido");
+        btnGerarPedido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGerarPedidoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -211,7 +229,7 @@ public class FrmPedido extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)))
+                        .addComponent(btnGerarPedido)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -236,7 +254,7 @@ public class FrmPedido extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
+                .addComponent(btnGerarPedido)
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -305,6 +323,7 @@ public class FrmPedido extends javax.swing.JFrame {
 
     private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
         // Adiciona um item ao carrinho.
+        if(!txtQtd.getText().isEmpty()) {
         int qtd = Integer.parseInt(txtQtd.getText());
         int codigo = Integer.parseInt(tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 0).toString());
         String produto = tbProdutosPedido.getValueAt(tbProdutosPedido.getSelectedRow(), 1).toString();
@@ -316,7 +335,55 @@ public class FrmPedido extends javax.swing.JFrame {
             produto,
             qtd
         });
+    } else {
+            JOptionPane.showMessageDialog(null, "Informe uma quantidade.");
+    }
     }//GEN-LAST:event_btnAddItemActionPerformed
+
+    private void btnGerarPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGerarPedidoActionPerformed
+        //Gera um pdf com os dados da tabela.
+        
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+        
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream("Pedido.pdf"));
+            
+            document.open();
+            
+            document.add(new Paragraph("PEDIDO DE COMPRA"));
+            document.add(new Paragraph(""));
+            
+            PdfPTable tabela = new PdfPTable(3);
+            
+            //Adicionando os headers.
+            tabela.addCell("Código");
+            tabela.addCell("Produto");
+            tabela.addCell("Quant.");
+            
+            for (int i = 0; i < tbCarrinhoPedido.getRowCount(); i++) {
+                String id = tbCarrinhoPedido.getValueAt(i, 0).toString();
+                String produto = tbCarrinhoPedido.getValueAt(i, 1).toString();
+                String quant = tbCarrinhoPedido.getValueAt(i, 2).toString();
+                
+                tabela.addCell(id);
+                tabela.addCell(produto);
+                tabela.addCell(quant);
+            }
+            
+            document.add(tabela);
+            
+        } catch (FileNotFoundException | DocumentException ex) {
+            JOptionPane.showMessageDialog(null, "Erro: " +ex);
+        } finally {
+            document.close();
+        }
+        
+        try {
+            Desktop.getDesktop().open(new File("Pedido.pdf"));
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Erro: " +ex);
+        }
+    }//GEN-LAST:event_btnGerarPedidoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -355,8 +422,8 @@ public class FrmPedido extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddItem;
+    private javax.swing.JButton btnGerarPedido;
     private javax.swing.JButton btnpesquisar;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;

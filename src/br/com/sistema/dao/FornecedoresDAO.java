@@ -7,6 +7,7 @@ package br.com.sistema.dao;
 
 import br.com.sistema.jdbc.ConnectionFactory;
 import br.com.sistema.model.Clientes;
+import br.com.sistema.model.CpfCnpjUtils;
 import br.com.sistema.model.Fornecedores;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -98,7 +99,7 @@ public class FornecedoresDAO {
 
             //2 passo - conectar o banco de dados e organizar o comando sql
             PreparedStatement stmt = con.prepareStatement(sql);
-        
+
             stmt.setString(1, obj.getNome());
             stmt.setString(2, obj.getCnpj());
             stmt.setString(3, obj.getEmail());
@@ -125,9 +126,9 @@ public class FornecedoresDAO {
 
         }
     }
-    
+
     //Metodo listarFornecedores
-     public List<Fornecedores> listarFornecedores() {
+    public List<Fornecedores> listarFornecedores() {
         try {
 
             //1 passo criar a lista
@@ -142,7 +143,7 @@ public class FornecedoresDAO {
                 Fornecedores obj = new Fornecedores();
 
                 obj.setId(rs.getInt("id"));
-                obj.setNome(rs.getString("nome"));             
+                obj.setNome(rs.getString("nome"));
                 obj.setCnpj(rs.getString("cnpj"));
                 obj.setEmail(rs.getString("email"));
                 obj.setTelefone(rs.getString("telefone"));
@@ -167,9 +168,9 @@ public class FornecedoresDAO {
         }
 
     }
-    
+
     //Metodo listarFornecedores por nome
-     public List<Fornecedores> listarFornecedoresPorNome(String nome) {
+    public List<Fornecedores> listarFornecedoresPorNome(String nome) {
         try {
 
             //1 passo criar a lista
@@ -185,7 +186,7 @@ public class FornecedoresDAO {
                 Fornecedores obj = new Fornecedores();
 
                 obj.setId(rs.getInt("id"));
-                obj.setNome(rs.getString("nome"));             
+                obj.setNome(rs.getString("nome"));
                 obj.setCnpj(rs.getString("cnpj"));
                 obj.setEmail(rs.getString("email"));
                 obj.setTelefone(rs.getString("telefone"));
@@ -210,9 +211,9 @@ public class FornecedoresDAO {
         }
 
     }
-     
-     //metodo consultaFornecedoresPornome
-      public Fornecedores consultaPorNome(String nome) {
+
+    //metodo consultaFornecedoresPornome
+    public Fornecedores consultaPorNome(String nome) {
         try {
             //1 passo - criar o sql , organizar e executar.
             String sql = "select * from tb_fornecedores where nome = ?";
@@ -220,13 +221,12 @@ public class FornecedoresDAO {
             stmt.setString(1, nome);
 
             ResultSet rs = stmt.executeQuery();
-           Fornecedores obj = new Fornecedores();
-
+            Fornecedores obj = new Fornecedores();
 
             if (rs.next()) {
 
-               obj.setId(rs.getInt("id"));
-                obj.setNome(rs.getString("nome"));             
+                obj.setId(rs.getInt("id"));
+                obj.setNome(rs.getString("nome"));
                 obj.setCnpj(rs.getString("cnpj"));
                 obj.setEmail(rs.getString("email"));
                 obj.setTelefone(rs.getString("telefone"));
@@ -248,5 +248,20 @@ public class FornecedoresDAO {
         }
     }
 
-     
+    public Fornecedores validaCPF_CNPJ(String cnpj) {
+
+        boolean validacnpj = CpfCnpjUtils.isValid(cnpj);
+
+        Fornecedores obj = new Fornecedores();
+
+        if (validacnpj) {
+            obj.setCnpj(cnpj);
+            return obj;
+        } else {
+            JOptionPane.showMessageDialog(null, "Valor inválido!");
+            obj.setCnpj("");
+            return obj;
+        }
+    }
+
 }
