@@ -14,7 +14,9 @@ import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+
 import java.util.Properties;
+
 import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -83,18 +85,21 @@ public void JavaEmail(String email, String senha) {
     
     int stmpport = 465;
     
-    String  d_email = "univelaluno@gmail.com",
-        d_password = "Aluno123456",
+    String  d_email = "sistemavendasbiopark@gmail.com",
+        d_password = "biopark123",
         d_host = "smtp.gmail.com",
         d_port  = "465", //465,587
         m_to = email,
-        m_subject = "Testing",
-        m_text = "Sua nova senha é:" + senha;
+        m_subject = "Troca de senha",
+        m_text = "Sua nova senha é: " + senha;
     
     props.put("mail.smtp.user", d_email);
+    props.setProperty("mail.user", d_email);
+    props.put("mail.password", d_password);
     props.put("mail.smtp.host", d_host);
     props.put("mail.smtp.port", d_port);
     props.put("mail.smtp.ssl.trust", d_host);
+    props.put("mail.smtp.ssl.enable", "true");
     props.put("mail.smtp.debug", "true");
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.starttls.enable", "true");
@@ -105,7 +110,6 @@ public void JavaEmail(String email, String senha) {
     props.put("mail.smtp.socketFactory.fallback", "false");
     props.put("mail.transport.protocol", "smtp");
     props.put("mail.debug", true);
-    
 
       // Get system properties
       System.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
@@ -136,11 +140,8 @@ public void JavaEmail(String email, String senha) {
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(m_to));
 
         Address[] toUser = InternetAddress.parse(email);
-        
+       
         Transport transport = session.getTransport("smtps");
-        transport.connect (d_host, stmpport, d_email, d_password);
-        transport.sendMessage(msg, msg.getAllRecipients());
-        transport.close();
         
         transport.send(msg);
 
