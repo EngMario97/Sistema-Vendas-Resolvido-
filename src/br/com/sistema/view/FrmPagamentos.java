@@ -60,6 +60,7 @@ public class FrmPagamentos extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtobs = new javax.swing.JTextArea();
+        btncancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Tela de Pagamentos");
@@ -130,13 +131,31 @@ public class FrmPagamentos extends javax.swing.JFrame {
         txtobs.setRows(5);
         jScrollPane1.setViewportView(txtobs);
 
+        btncancelar.setFont(new java.awt.Font("Tahoma", 0, 26)); // NOI18N
+        btncancelar.setText("Cancelar Venda");
+        btncancelar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btncancelarMouseClicked(evt);
+            }
+        });
+        btncancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(btnfinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(105, 105, 105)
+                        .addComponent(btncancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -163,10 +182,7 @@ public class FrmPagamentos extends javax.swing.JFrame {
                                         .addGap(18, 18, 18)
                                         .addComponent(jLabel2)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addComponent(btnfinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -201,7 +217,9 @@ public class FrmPagamentos extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(txttotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                .addComponent(btnfinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnfinalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btncancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(27, 27, 27))
         );
 
@@ -253,7 +271,7 @@ public class FrmPagamentos extends javax.swing.JFrame {
         // Cadastrando os produtos na tabela itemvendas
         for (int i = 0; i < carrinho.getRowCount(); i++) {
 
-            int qtd_estoque , qtd_comprada, qtd_atualizada;
+            int qtd_estoque, qtd_comprada, qtd_atualizada;
             Produtos objp = new Produtos();
             ProdutosDAO dao_produto = new ProdutosDAO();
           
@@ -282,6 +300,20 @@ public class FrmPagamentos extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_btnfinalizarActionPerformed
+
+    private void btncancelarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btncancelarMouseClicked
+        int op = JOptionPane.showConfirmDialog(null, "Tem certeza que deseja"
+            + " cancelar a venda?");
+
+        if(op == 0) {
+            this.dispose();
+        }
+    }//GEN-LAST:event_btncancelarMouseClicked
+
+    private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
+        // botao cancelar venda
+
+    }//GEN-LAST:event_btncancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -319,6 +351,7 @@ public class FrmPagamentos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btncancelar;
     private javax.swing.JButton btnfinalizar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

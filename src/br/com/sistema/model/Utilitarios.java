@@ -83,8 +83,8 @@ public void JavaEmail(String email, String senha) {
     
     int stmpport = 465;
     
-    String  d_email = "sistemavendasbiopark@gmail.com",
-        d_password = "biopark123",
+    String  d_email = "univelaluno@gmail.com",
+        d_password = "Aluno123456",
         d_host = "smtp.gmail.com",
         d_port  = "465", //465,587
         m_to = email,
@@ -94,17 +94,27 @@ public void JavaEmail(String email, String senha) {
     props.put("mail.smtp.user", d_email);
     props.put("mail.smtp.host", d_host);
     props.put("mail.smtp.port", d_port);
-    props.put("mail.smtp.starttls.enable","true");
     props.put("mail.smtp.ssl.trust", d_host);
     props.put("mail.smtp.debug", "true");
     props.put("mail.smtp.auth", "true");
-    props.put("mail.smtp.socketFactory.port", d_port);
+    props.put("mail.smtp.starttls.enable", "true");
+    props.put("mail.smtp.starttls.required", "true");
+    props.put("mail.smtp.ssl.protocols", "TLSv1.2");
     props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+    props.put("mail.smtp.socketFactory.port", d_port);
     props.put("mail.smtp.socketFactory.fallback", "false");
     props.put("mail.transport.protocol", "smtp");
     props.put("mail.debug", true);
     
-    Session session = Session.getInstance(props,
+
+      // Get system properties
+      System.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
+      Properties properties = System.getProperties();
+
+      // Setup mail server
+      properties.setProperty("mail.smtp.host", d_host);
+    
+    Session session = Session.getDefaultInstance(props,
       new javax.mail.Authenticator() {
           @Override
            protected PasswordAuthentication getPasswordAuthentication()
@@ -114,7 +124,7 @@ public void JavaEmail(String email, String senha) {
       });
     
 
-    /** Ativa Debug para sessão */
+    //Ativa Debug para sessão 
     session.setDebug(true);
     
     try {
@@ -130,13 +140,16 @@ public void JavaEmail(String email, String senha) {
         Transport transport = session.getTransport("smtps");
         transport.connect (d_host, stmpport, d_email, d_password);
         transport.sendMessage(msg, msg.getAllRecipients());
-        transport.close();  
+        transport.close();
+        
+        transport.send(msg);
 
         JOptionPane.showMessageDialog(null, "Email enviado!");
 
      } catch (MessagingException e) {
-        throw new RuntimeException(e);
+        e.printStackTrace();
     }
   }
 }
-
+        
+        
