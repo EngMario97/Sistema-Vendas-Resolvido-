@@ -40,7 +40,7 @@ public class Frmmenu extends javax.swing.JFrame {
         
         jMenu7.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.CTRL_DOWN_MASK), key);
         jMenu7.getActionMap().put(key, sairAction);
-        }
+    }
 
     private void sair(){
         int op;
@@ -194,7 +194,7 @@ public class Frmmenu extends javax.swing.JFrame {
         jMenu6.setText("Produtos");
 
         jMenuItem4.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_E, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/controle.png"))); // NOI18N
+        jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/controle vendas.png"))); // NOI18N
         jMenuItem4.setText("Controle de estoque");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
