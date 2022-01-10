@@ -109,7 +109,7 @@ public class Frmclientes extends javax.swing.JFrame {
         this.getContentPane().setBackground(Color.WHITE);
         
         
-        //botão editar
+        /*botão editar
         Action editarAction = new AbstractAction("editar"){
             @Override
             public void actionPerformed(ActionEvent e){
@@ -122,7 +122,7 @@ public class Frmclientes extends javax.swing.JFrame {
         jButton3.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,KeyEvent.CTRL_DOWN_MASK), key);
         jButton3.getActionMap().put(key, editarAction);
         
-        this.getContentPane().setBackground(Color.WHITE);
+        this.getContentPane().setBackground(Color.WHITE);*/
 
     }
 
@@ -187,7 +187,7 @@ public class Frmclientes extends javax.swing.JFrame {
     }
     
     
-    //botão editar 
+    /*botão editar 
     public void editar(){
         
         Clientes obj = new Clientes();
@@ -213,7 +213,7 @@ public class Frmclientes extends javax.swing.JFrame {
         dao.alterarCliente(obj);
 
         new Utilitarios().LimpaTela(painel_dados);
-    }
+    }*/
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -833,7 +833,7 @@ public class Frmclientes extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // botao editar
-        editar();
+        //editar();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
