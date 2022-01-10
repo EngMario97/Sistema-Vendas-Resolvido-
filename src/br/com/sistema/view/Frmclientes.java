@@ -71,20 +71,41 @@ public class Frmclientes extends javax.swing.JFrame {
     public Frmclientes() {
         initComponents();
         
-        Action pesquisarAction = new AbstractAction("pesquisar"){
+        
+        
+ 
+        //botão novo
+        Action novoAction = new AbstractAction("novo"){
             @Override
             public void actionPerformed(ActionEvent e){
                 
-                pesquisar();
+                limpaDados();
             }
 
            
         };
         
-        String key = "pesquisar";
+        String key = "novo";
         
-        btnbusca.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,KeyEvent.CTRL_DOWN_MASK), key);
-        btnbusca.getActionMap().put(key, pesquisarAction);
+        btnnovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N,KeyEvent.CTRL_DOWN_MASK), key);
+        btnnovo.getActionMap().put(key, novoAction);
+        
+        this.getContentPane().setBackground(Color.WHITE);
+        
+        
+        //botão salvar
+        Action salvarAction = new AbstractAction("salvar"){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+                salvar();
+            }
+
+           
+        };
+        
+        btnnovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.CTRL_DOWN_MASK), key);
+        btnnovo.getActionMap().put(key, salvarAction);
         
         this.getContentPane().setBackground(Color.WHITE);
 
@@ -120,6 +141,36 @@ public class Frmclientes extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Cliente não encontrado!");
         }
     }
+    
+    //novo
+    public void limpaDados(){
+        new Utilitarios().LimpaTela(painel_dados);
+    }
+    
+    public void salvar(){
+        
+        Clientes obj = new Clientes();
+
+        obj.setNome(txtnome.getText());
+        obj.setRg(txtrg.getText());
+        obj.setCpf(txtcpf.getText());
+        obj.setEmail(txtemail.getText());
+        obj.setTelefone(txtfixo.getText());
+        obj.setCelular(txtcel.getText());
+        obj.setCep(txtcep.getText());
+        obj.setEndereco(txtend.getText());
+        obj.setNumero(Integer.parseInt(txtnumero.getText()));
+        obj.setComplemento(txtcomplemento.getText());
+        obj.setBairro(txtbairro.getText());
+        obj.setCidade(txtcidade.getText());
+        obj.setUf(cbuf.getSelectedItem().toString());
+
+        ClientesDAO dao = new ClientesDAO();
+
+        dao.cadastrarCliente(obj);
+        new Utilitarios().LimpaTela(painel_dados);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -259,6 +310,11 @@ public class Frmclientes extends javax.swing.JFrame {
                 btnbuscaActionPerformed(evt);
             }
         });
+        btnbusca.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnbuscaKeyPressed(evt);
+            }
+        });
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel8.setText("Celular:");
@@ -270,6 +326,11 @@ public class Frmclientes extends javax.swing.JFrame {
         txtnome.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtnomeActionPerformed(evt);
+            }
+        });
+        txtnome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtnomeKeyPressed(evt);
             }
         });
 
@@ -578,7 +639,9 @@ public class Frmclientes extends javax.swing.JFrame {
 
         btnnovo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnnovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/novo.png"))); // NOI18N
-        btnnovo.setText("+ Novo");
+        btnnovo.setText("Novo");
+        btnnovo.setToolTipText("");
+        btnnovo.setContentAreaFilled(false);
         btnnovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnnovoActionPerformed(evt);
@@ -713,28 +776,8 @@ public class Frmclientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txtnomeActionPerformed
 
     private void btnsalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalvarActionPerformed
-        // boto salvar
+        // botão salvar
 
-        Clientes obj = new Clientes();
-
-        obj.setNome(txtnome.getText());
-        obj.setRg(txtrg.getText());
-        obj.setCpf(txtcpf.getText());
-        obj.setEmail(txtemail.getText());
-        obj.setTelefone(txtfixo.getText());
-        obj.setCelular(txtcel.getText());
-        obj.setCep(txtcep.getText());
-        obj.setEndereco(txtend.getText());
-        obj.setNumero(Integer.parseInt(txtnumero.getText()));
-        obj.setComplemento(txtcomplemento.getText());
-        obj.setBairro(txtbairro.getText());
-        obj.setCidade(txtcidade.getText());
-        obj.setUf(cbuf.getSelectedItem().toString());
-
-        ClientesDAO dao = new ClientesDAO();
-
-        dao.cadastrarCliente(obj);
-        new Utilitarios().LimpaTela(painel_dados);
 
 
     }//GEN-LAST:event_btnsalvarActionPerformed
@@ -820,7 +863,7 @@ public class Frmclientes extends javax.swing.JFrame {
     }//GEN-LAST:event_txtpesquisaKeyPressed
 
     private void btnnovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnovoActionPerformed
-        new Utilitarios().LimpaTela(painel_dados);
+        limpaDados();
 
     }//GEN-LAST:event_btnnovoActionPerformed
 
@@ -843,6 +886,31 @@ public class Frmclientes extends javax.swing.JFrame {
         txtcidade.setText(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 12).toString());
         cbuf.setSelectedItem(tabelaClientes.getValueAt(tabelaClientes.getSelectedRow(), 13).toString());
     }//GEN-LAST:event_tabelaClientesMouseClicked
+
+    private void btnbuscaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnbuscaKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnbuscaKeyPressed
+
+    private void txtnomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnomeKeyPressed
+        // TODO add your handling code here:
+        //botao pesquisar
+        Action pesquisarAction = new AbstractAction("pesquisar"){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+                pesquisar();
+            }
+
+           
+        };
+        
+        String key = "pesquisar";
+        
+        btnbusca.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,KeyEvent.CTRL_DOWN_MASK), key);
+        btnbusca.getActionMap().put(key, pesquisarAction);
+        
+        this.getContentPane().setBackground(Color.WHITE);
+    }//GEN-LAST:event_txtnomeKeyPressed
 
     /**
      * @param args the command line arguments
