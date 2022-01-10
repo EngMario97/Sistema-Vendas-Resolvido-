@@ -17,8 +17,10 @@ import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.text.DecimalFormat;
 
 import java.util.List;
+import java.util.Scanner;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -382,9 +384,15 @@ public class FrmVendas extends javax.swing.JFrame {
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder("Total da Venda"));
 
         txttotal.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        txttotal.setToolTipText("");
         txttotal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txttotalActionPerformed(evt);
+            }
+        });
+        txttotal.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txttotalKeyTyped(evt);
             }
         });
 
@@ -407,11 +415,11 @@ public class FrmVendas extends javax.swing.JFrame {
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txttotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txttotal)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(jLabel8)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -517,13 +525,13 @@ public class FrmVendas extends javax.swing.JFrame {
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
         // botao add item
-        qtd = Integer.parseInt(txtqtd.getText());
-        preco = Double.parseDouble(txtpreco.getText());
+        qtd = Integer.parseInt(txtqtd.getText().replaceAll(",", "."));
+        preco = Double.parseDouble(txtpreco.getText().replaceAll(",", "."));
         
         subtotal = qtd * preco;
         
         total += subtotal;
-        txttotal.setText(String.valueOf(total));
+        txttotal.setText(String.valueOf(total).format("%.2f", total));
         
         //Adicionar o produto no carrinho        
         carrinho = (DefaultTableModel) tabelaItens.getModel();
@@ -560,6 +568,7 @@ public class FrmVendas extends javax.swing.JFrame {
 
     private void txttotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txttotalActionPerformed
         // TODO add your handling code here:
+
     }//GEN-LAST:event_txttotalActionPerformed
 
     private void txtcpfKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcpfKeyPressed
@@ -600,6 +609,11 @@ public class FrmVendas extends javax.swing.JFrame {
             this.dispose();
         }
     }//GEN-LAST:event_btncancelarMouseClicked
+
+    private void txttotalKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txttotalKeyTyped
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txttotalKeyTyped
 
     /**
      * @param args the command line arguments
