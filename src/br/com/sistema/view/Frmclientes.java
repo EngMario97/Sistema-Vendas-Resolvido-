@@ -100,12 +100,27 @@ public class Frmclientes extends javax.swing.JFrame {
                 
                 salvar();
             }
-
            
         };
         
         btnnovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S,KeyEvent.CTRL_DOWN_MASK), key);
         btnnovo.getActionMap().put(key, salvarAction);
+        
+        this.getContentPane().setBackground(Color.WHITE);
+        
+        
+        //botão editar
+        Action editarAction = new AbstractAction("editar"){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                
+                editar();
+            }
+           
+        };
+        
+        jButton3.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E,KeyEvent.CTRL_DOWN_MASK), key);
+        jButton3.getActionMap().put(key, editarAction);
         
         this.getContentPane().setBackground(Color.WHITE);
 
@@ -168,6 +183,35 @@ public class Frmclientes extends javax.swing.JFrame {
         ClientesDAO dao = new ClientesDAO();
 
         dao.cadastrarCliente(obj);
+        new Utilitarios().LimpaTela(painel_dados);
+    }
+    
+    
+    //botão editar 
+    public void editar(){
+        
+        Clientes obj = new Clientes();
+
+        obj.setNome(txtnome.getText());
+        obj.setRg(txtrg.getText());
+        obj.setCpf(txtcpf.getText());
+        obj.setEmail(txtemail.getText());
+        obj.setTelefone(txtfixo.getText());
+        obj.setCelular(txtcel.getText());
+        obj.setCep(txtcep.getText());
+        obj.setEndereco(txtend.getText());
+        obj.setNumero(Integer.parseInt(txtnumero.getText()));
+        obj.setComplemento(txtcomplemento.getText());
+        obj.setBairro(txtbairro.getText());
+        obj.setCidade(txtcidade.getText());
+        obj.setUf(cbuf.getSelectedItem().toString());
+
+        obj.setId(Integer.parseInt(txtcodigo.getText()));
+
+        ClientesDAO dao = new ClientesDAO();
+
+        dao.alterarCliente(obj);
+
         new Utilitarios().LimpaTela(painel_dados);
     }
     
@@ -789,32 +833,7 @@ public class Frmclientes extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // botao editar
-
-        Clientes obj = new Clientes();
-
-        obj.setNome(txtnome.getText());
-        obj.setRg(txtrg.getText());
-        obj.setCpf(txtcpf.getText());
-        obj.setEmail(txtemail.getText());
-        obj.setTelefone(txtfixo.getText());
-        obj.setCelular(txtcel.getText());
-        obj.setCep(txtcep.getText());
-        obj.setEndereco(txtend.getText());
-        obj.setNumero(Integer.parseInt(txtnumero.getText()));
-        obj.setComplemento(txtcomplemento.getText());
-        obj.setBairro(txtbairro.getText());
-        obj.setCidade(txtcidade.getText());
-        obj.setUf(cbuf.getSelectedItem().toString());
-
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
-
-        ClientesDAO dao = new ClientesDAO();
-
-        dao.alterarCliente(obj);
-
-        new Utilitarios().LimpaTela(painel_dados);
-
-
+        editar();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
