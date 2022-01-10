@@ -383,7 +383,9 @@ public class Frmmenu extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        // TODO add your handling code here:
+        FrmPedido tela = new FrmPedido();
+        
+        tela.setVisible(true);
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     /**
