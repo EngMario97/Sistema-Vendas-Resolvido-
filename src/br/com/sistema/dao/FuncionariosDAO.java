@@ -332,7 +332,34 @@ public class FuncionariosDAO {
         }
 
     }
-
+    
+    public Funcionarios verificaEmail (String email) {
+        try{
+           
+            String sql = "select email from tb_funcionarios where email = ?;";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, email);
+            
+            ResultSet rs = stmt.executeQuery();
+            Funcionarios obj = new Funcionarios();
+            
+            if (rs.next()) {
+                obj.setEmail(rs.getString("email"));
+            }
+            
+            if(obj.getEmail()==null){
+                obj.setEmail("aaaaaaaaaaaaaaaa");
+            }
+            
+            return obj;
+            
+        } catch (SQLException erro) {
+            JOptionPane.showMessageDialog(null, "Erro: " + erro);
+            return null;
+        }
+    }
+    
+    
     public void recuperaSenha (String email, String senha){
         try{
         //1 passo - SQL
