@@ -5,6 +5,7 @@
 package br.com.sistema.view;
 
 import br.com.sistema.dao.FuncionariosDAO;
+import br.com.sistema.model.Funcionarios;
 import java.util.Random;
 import javax.swing.JOptionPane;
 /**
@@ -111,7 +112,15 @@ public class FrmRecuperarSenha extends javax.swing.JFrame {
             senha = Integer.toString(gerador.nextInt());
            
             FuncionariosDAO dao = new FuncionariosDAO();
+            Funcionarios obj = new Funcionarios();
             
+            obj=dao.verificaEmail(email);
+            
+            String emailbd = obj.getEmail();
+            
+            if(!(emailbd.equals(email))){
+                JOptionPane.showMessageDialog(null, "Por favor verifique o email digitado.");
+            } else {
             dao.recuperaSenha(email, senha);
             
             FrmLogin telalogin = new FrmLogin();
@@ -119,6 +128,9 @@ public class FrmRecuperarSenha extends javax.swing.JFrame {
             this.dispose();
 
             telalogin.setVisible(true);
+            }
+            
+            
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "erro");
         }

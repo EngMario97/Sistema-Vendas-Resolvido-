@@ -7,6 +7,7 @@ package br.com.sistema.dao;
 
 import br.com.sistema.jdbc.ConnectionFactory;
 import br.com.sistema.model.Clientes;
+import br.com.sistema.model.CpfCnpjUtils;
 import br.com.sistema.model.WebServiceCep;
 
 import java.sql.Connection;
@@ -36,7 +37,6 @@ public class ClientesDAO {
     }
 
     //Metodo cadastrarCliente
-
     /**
      *
      * @param obj
@@ -77,7 +77,6 @@ public class ClientesDAO {
     }
 
     //Metodo AlterarCliente
-
     /**
      *
      * @param obj
@@ -119,7 +118,6 @@ public class ClientesDAO {
     }
 
     //Metodo ExcluirCliente
-
     /**
      *
      * @param obj
@@ -148,7 +146,6 @@ public class ClientesDAO {
     }
 
     //Metodo Listar Todos Clientes
-
     /**
      *
      * @return
@@ -196,7 +193,6 @@ public class ClientesDAO {
     }
 
     //metodo consultaCliente por Nome
-
     /**
      *
      * @param nome
@@ -238,9 +234,7 @@ public class ClientesDAO {
         }
     }
 
-    
     //metodo busca Cliente  por Cpf
-
     /**
      *
      * @param cpf
@@ -281,12 +275,8 @@ public class ClientesDAO {
             return null;
         }
     }
-    
-    
-    
-    
-    //Metodo buscarclientePorNome - retorna uma lista
 
+    //Metodo buscarclientePorNome - retorna uma lista
     /**
      *
      * @param nome
@@ -336,16 +326,14 @@ public class ClientesDAO {
     }
 
     //Busca Cep
-
     /**
      *
      * @param cep
      * @return
      */
     public Clientes buscaCep(String cep) {
-       
+
         WebServiceCep webServiceCep = WebServiceCep.searchCep(cep);
-       
 
         Clientes obj = new Clientes();
 
@@ -354,7 +342,7 @@ public class ClientesDAO {
             obj.setCidade(webServiceCep.getCidade());
             obj.setBairro(webServiceCep.getBairro());
             obj.setUf(webServiceCep.getUf());
-            
+
             return obj;
         } else {
             JOptionPane.showMessageDialog(null, "Erro numero: " + webServiceCep.getResulCode());
@@ -363,6 +351,21 @@ public class ClientesDAO {
         }
 
     }
-    
-   
+
+    public Clientes validaCPF_CNPJ(String cpf) {
+
+        boolean validacpf = CpfCnpjUtils.isValid(cpf);
+
+        Clientes obj = new Clientes();
+
+        if (validacpf) {
+            obj.setCpf(cpf);
+            return obj;
+        } else {
+            JOptionPane.showMessageDialog(null, "Valor inválido!");
+            obj.setCpf("");
+            return obj;
+        }
+    }
+
 }

@@ -10,7 +10,7 @@ package br.com.sistema.model;
  * @author Tampelini
  */
 public class Clientes {
-    
+
     //Atributos
     private int id;
     private String nome;
@@ -25,8 +25,8 @@ public class Clientes {
     private String complemento;
     private String bairro;
     private String cidade;
-    private String uf;   
- 
+    private String uf;
+
     //Getters e Setters
     public int getId() {
         return id;
@@ -139,8 +139,5 @@ public class Clientes {
     public void setUf(String uf) {
         this.uf = uf;
     }
-    
-    
-    
-    
+
 }
