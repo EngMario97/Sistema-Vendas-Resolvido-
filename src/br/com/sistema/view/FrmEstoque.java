@@ -8,6 +8,7 @@ package br.com.sistema.view;
 import br.com.sistema.dao.ProdutosDAO;
 import br.com.sistema.dao.VendasDAO;
 import br.com.sistema.model.Produtos;
+import br.com.sistema.model.Utilitarios;
 import br.com.sistema.model.Vendas;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -49,6 +50,32 @@ public class FrmEstoque extends javax.swing.JFrame {
         initComponents();
     }
 
+    
+    
+    
+    //pesquisar
+    public void pesquisar(){
+        String nome = "%" + txtpesquisa.getText() + "%";
+
+        ProdutosDAO dao = new ProdutosDAO();
+        List<Produtos> lista = dao.listarProdutosPorNome(nome);
+
+        DefaultTableModel dados = (DefaultTableModel) tabelaProdutos.getModel();
+        dados.setNumRows(0);
+
+        for (Produtos c : lista) {
+            dados.addRow(new Object[]{
+                c.getId(),
+                c.getDescricao(),
+                c.getPreco(),
+                c.getQtd_estoque(),
+                c.getFornecedor().getNome()
+            });
+
+        }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -110,6 +137,11 @@ public class FrmEstoque extends javax.swing.JFrame {
         jLabel16.setText("Descrição:");
 
         txtpesquisa.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtpesquisa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtpesquisaActionPerformed(evt);
+            }
+        });
         txtpesquisa.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtpesquisaKeyPressed(evt);
@@ -129,6 +161,7 @@ public class FrmEstoque extends javax.swing.JFrame {
 
         txtestoque.setEditable(false);
         txtestoque.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtestoque.setName("txtestoque"); // NOI18N
         txtestoque.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtestoqueKeyPressed(evt);
@@ -136,6 +169,11 @@ public class FrmEstoque extends javax.swing.JFrame {
         });
 
         txtqtd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtqtd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtqtdActionPerformed(evt);
+            }
+        });
         txtqtd.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtqtdKeyPressed(evt);
@@ -274,25 +312,7 @@ public class FrmEstoque extends javax.swing.JFrame {
 
     private void btnpesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpesquisarActionPerformed
         // Botao pesquisar
-        // Botao pesquisar
-        String nome = "%" + txtpesquisa.getText() + "%";
-
-        ProdutosDAO dao = new ProdutosDAO();
-        List<Produtos> lista = dao.listarProdutosPorNome(nome);
-
-        DefaultTableModel dados = (DefaultTableModel) tabelaProdutos.getModel();
-        dados.setNumRows(0);
-
-        for (Produtos c : lista) {
-            dados.addRow(new Object[]{
-                c.getId(),
-                c.getDescricao(),
-                c.getPreco(),
-                c.getQtd_estoque(),
-                c.getFornecedor().getNome()
-            });
-
-        }
+        pesquisar();
 
     }//GEN-LAST:event_btnpesquisarActionPerformed
 
@@ -315,25 +335,26 @@ public class FrmEstoque extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaProdutosMouseClicked
 
     private void btnaddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddActionPerformed
-        try {
-            int qtd_estoque, qtd;
+       
+            try {
+                int qtd_estoque, qtd;
 
-            qtd_estoque = Integer.parseInt(txtestoque.getText());
+                qtd_estoque = Integer.parseInt(txtestoque.getText());
 
-            qtd = Integer.parseInt(txtqtd.getText());
+                qtd = Integer.parseInt(txtqtd.getText());
+            
+                qtd_nova = qtd_estoque + qtd;
 
-            qtd_nova = qtd_estoque + qtd;
+                ProdutosDAO dao = new ProdutosDAO();
 
-            ProdutosDAO dao = new ProdutosDAO();
+                dao.adicionarEstoque(idproduto, qtd_nova);
 
-            dao.adicionarEstoque(idproduto, qtd_nova);
+                JOptionPane.showMessageDialog(null, "Estoque do Produto Atualizado");
 
-            JOptionPane.showMessageDialog(null, "Estoque do Produto Atualizado");
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Selecione o produto ou informe a nova qtd." + e);
 
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Selecione o produto ou informe a nova qtd." + e);
-
-        }
+            }
 
     }//GEN-LAST:event_btnaddActionPerformed
 
@@ -341,6 +362,15 @@ public class FrmEstoque extends javax.swing.JFrame {
         listar();
         tabelaProdutos.setAutoCreateRowSorter(true);
     }//GEN-LAST:event_formWindowActivated
+
+    private void txtqtdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtqtdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtqtdActionPerformed
+
+    private void txtpesquisaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtpesquisaActionPerformed
+        // TODO add your handling code here:
+        pesquisar();
+    }//GEN-LAST:event_txtpesquisaActionPerformed
 
     /**
      * @param args the command line arguments

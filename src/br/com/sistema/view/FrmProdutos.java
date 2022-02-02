@@ -14,13 +14,18 @@ import br.com.sistema.model.Produtos;
 import br.com.sistema.model.Utilitarios;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -58,9 +63,155 @@ public class FrmProdutos extends javax.swing.JFrame {
     public FrmProdutos() {
         initComponents();
         this.getContentPane().setBackground(Color.WHITE);
+        
+        //botão novo
+        Action novoAction = new AbstractAction("novo") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                limpaDados();
+            }
+
+        };
+
+        String key = "novo";
+
+        btnnovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), key);
+        btnnovo.getActionMap().put(key, novoAction);
+
+        
+        //botão salvar
+        Action salvarAction = new AbstractAction("salvar") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                salvar();
+            }
+
+        };
+        
+        btnsalvar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), key);
+        btnsalvar.getActionMap().put(key, salvarAction);
+        
+        //botão editar
+        Action editarAction = new AbstractAction("editar") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                editar();
+            }
+
+        };
+
+        jButton3.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK), key);
+        jButton3.getActionMap().put(key, editarAction);
+        
+        //botão excluir
+        Action excluirAction = new AbstractAction("excluir") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                excluir();
+            }
+
+        };
+
+        jButton4.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK), key);
+        jButton4.getActionMap().put(key, excluirAction);
 
     }
 
+    
+    
+    
+    
+    
+    
+    //botão novo 
+    public void limpaDados(){
+         new Utilitarios().LimpaTela(painel_dados);
+    }
+    
+    //botão salvar
+    public void salvar(){
+        Produtos obj = new Produtos();
+        obj.setDescricao(txtdescricao.getText());
+        obj.setPreco(Double.parseDouble(txtpreco.getText()));
+        obj.setQtd_estoque(Integer.parseInt(txtqtdestoque.getText()));
+
+        //Criar um objeto de Fornecedor
+        Fornecedores f = new Fornecedores();
+        f = (Fornecedores) cbfornecedor.getSelectedItem();
+        obj.setFornecedor(f);
+
+        ProdutosDAO dao = new ProdutosDAO();
+        dao.cadastrar(obj);
+
+        new Utilitarios().LimpaTela(painel_dados);
+
+    }
+    
+    //botão editar 
+    public void editar(){
+        Produtos obj = new Produtos();
+        obj.setId(Integer.parseInt(txtcodigo.getText()));
+        obj.setDescricao(txtdescricao.getText());
+        obj.setPreco(Double.parseDouble(txtpreco.getText()));
+        obj.setQtd_estoque(Integer.parseInt(txtqtdestoque.getText()));
+
+        //Criar um objeto de Fornecedor
+        Fornecedores f = new Fornecedores();
+        f = (Fornecedores) cbfornecedor.getSelectedItem();
+
+        obj.setFornecedor(f);
+
+        ProdutosDAO dao = new ProdutosDAO();
+        dao.alterar(obj);
+
+        new Utilitarios().LimpaTela(painel_dados);
+    }
+    
+    //botão excluir
+    public void excluir(){
+        Produtos obj = new Produtos();
+        obj.setId(Integer.parseInt(txtcodigo.getText()));
+
+        ProdutosDAO dao = new ProdutosDAO();
+        dao.excluir(obj);
+
+        new Utilitarios().LimpaTela(painel_dados);
+    }
+    
+    //pesquisar 
+    public void pesquisar(){
+        String nome = txtdescricao.getText();
+        Produtos obj = new Produtos();
+        ProdutosDAO dao = new ProdutosDAO();       
+
+        obj = dao.consultaPorNome(nome);
+        
+        cbfornecedor.removeAllItems();
+
+        if (obj.getDescricao() != null) {
+
+            //Exibi os dados do obj nos campos de texto
+            txtcodigo.setText(String.valueOf(obj.getId()));
+            txtdescricao.setText(obj.getDescricao());
+            txtpreco.setText(String.valueOf(obj.getPreco()));
+            txtqtdestoque.setText(String.valueOf(obj.getQtd_estoque()));
+         
+            Fornecedores f = new Fornecedores();
+            FornecedoresDAO fdao = new FornecedoresDAO();
+
+            f = fdao.consultaPorNome(obj.getFornecedor().getNome());
+
+            cbfornecedor.getModel().setSelectedItem(f);
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "Produto não encontrado!");
+        }
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -151,6 +302,7 @@ public class FrmProdutos extends javax.swing.JFrame {
 
         txtcodigo.setEditable(false);
         txtcodigo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtcodigo.setName("codigo"); // NOI18N
 
         txtdescricao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         txtdescricao.addActionListener(new java.awt.event.ActionListener() {
@@ -160,6 +312,11 @@ public class FrmProdutos extends javax.swing.JFrame {
         });
 
         txtpreco.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtpreco.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtprecoActionPerformed(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Código:");
@@ -337,7 +494,8 @@ public class FrmProdutos extends javax.swing.JFrame {
         jTabbedPane1.addTab("Consulta de Produtos", jPanel4);
 
         btnnovo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnnovo.setText("+ Novo");
+        btnnovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/novo.png"))); // NOI18N
+        btnnovo.setText("Novo");
         btnnovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnnovoActionPerformed(evt);
@@ -409,34 +567,7 @@ public class FrmProdutos extends javax.swing.JFrame {
 
     private void btnbuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscaActionPerformed
         // botao buscar cliente por nome     
-
-        String nome = txtdescricao.getText();
-        Produtos obj = new Produtos();
-        ProdutosDAO dao = new ProdutosDAO();       
-
-        obj = dao.consultaPorNome(nome);
-        
-        cbfornecedor.removeAllItems();
-
-        if (obj.getDescricao() != null) {
-
-            //Exibi os dados do obj nos campos de texto
-            txtcodigo.setText(String.valueOf(obj.getId()));
-            txtdescricao.setText(obj.getDescricao());
-            txtpreco.setText(String.valueOf(obj.getPreco()));
-            txtqtdestoque.setText(String.valueOf(obj.getQtd_estoque()));
-         
-            Fornecedores f = new Fornecedores();
-            FornecedoresDAO fdao = new FornecedoresDAO();
-
-            f = fdao.consultaPorNome(obj.getFornecedor().getNome());
-
-            cbfornecedor.getModel().setSelectedItem(f);
-            
-        } else {
-            JOptionPane.showMessageDialog(null, "Produto não encontrado!");
-        }
-
+        pesquisar();
     }//GEN-LAST:event_btnbuscaActionPerformed
 
     private void btnpesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpesquisarActionPerformed
@@ -465,26 +596,19 @@ public class FrmProdutos extends javax.swing.JFrame {
 
     private void txtdescricaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdescricaoActionPerformed
         // TODO add your handling code here:
+        pesquisar();
     }//GEN-LAST:event_txtdescricaoActionPerformed
 
     private void btnsalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalvarActionPerformed
         // boto salvar
-        Produtos obj = new Produtos();
-        obj.setDescricao(txtdescricao.getText());
-        obj.setPreco(Double.parseDouble(txtpreco.getText()));
-        obj.setQtd_estoque(Integer.parseInt(txtqtdestoque.getText()));
-
-        //Criar um objeto de Fornecedor
-        Fornecedores f = new Fornecedores();
-        f = (Fornecedores) cbfornecedor.getSelectedItem();
-        obj.setFornecedor(f);
-
-        ProdutosDAO dao = new ProdutosDAO();
-        dao.cadastrar(obj);
-
-        new Utilitarios().LimpaTela(painel_dados);
-
-
+        Utilitarios util = new Utilitarios();
+        boolean bool = util.isAllFilled(painel_dados);
+            
+        if(bool == true){
+            salvar();
+        }else{
+            JOptionPane.showMessageDialog(null, "Verifique se todos os campos foram preenchidos");    
+        }
     }//GEN-LAST:event_btnsalvarActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -515,37 +639,19 @@ public class FrmProdutos extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // botao editar
-        Produtos obj = new Produtos();
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
-        obj.setDescricao(txtdescricao.getText());
-        obj.setPreco(Double.parseDouble(txtpreco.getText()));
-        obj.setQtd_estoque(Integer.parseInt(txtqtdestoque.getText()));
-
-        //Criar um objeto de Fornecedor
-        Fornecedores f = new Fornecedores();
-        f = (Fornecedores) cbfornecedor.getSelectedItem();
-
-        obj.setFornecedor(f);
-
-        ProdutosDAO dao = new ProdutosDAO();
-        dao.alterar(obj);
-
-        new Utilitarios().LimpaTela(painel_dados);
-
-
+         Utilitarios util = new Utilitarios();
+        boolean bool = util.isAllFilled(painel_dados);
+            
+        if(bool == true){
+            editar();
+        }else{
+            JOptionPane.showMessageDialog(null, "Verifique se todos os campos foram preenchidos");    
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // botao excluir
-
-        Produtos obj = new Produtos();
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
-
-        ProdutosDAO dao = new ProdutosDAO();
-        dao.excluir(obj);
-
-        new Utilitarios().LimpaTela(painel_dados);
-
+        excluir();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void txtpesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpesquisaKeyPressed
@@ -571,8 +677,7 @@ public class FrmProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_txtpesquisaKeyPressed
 
     private void btnnovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnovoActionPerformed
-        new Utilitarios().LimpaTela(painel_dados);
-
+       limpaDados();
     }//GEN-LAST:event_btnnovoActionPerformed
 
     private void cbfornecedorAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_cbfornecedorAncestorAdded
@@ -600,6 +705,10 @@ public class FrmProdutos extends javax.swing.JFrame {
         }
 
      }//GEN-LAST:event_cbfornecedorMouseClicked
+
+    private void txtprecoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtprecoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtprecoActionPerformed
 
     /**
      * @param args the command line arguments

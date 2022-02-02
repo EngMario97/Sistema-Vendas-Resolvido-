@@ -9,6 +9,7 @@ import br.com.sistema.jdbc.ConnectionFactory;
 import br.com.sistema.model.Clientes;
 import br.com.sistema.model.Fornecedores;
 import br.com.sistema.model.Produtos;
+import br.com.sistema.model.Vendas;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,6 +25,7 @@ import javax.swing.JOptionPane;
 public class ProdutosDAO {
 
     private Connection con;
+   
 
     public ProdutosDAO() {
         this.con = new ConnectionFactory().getConnection();
@@ -315,5 +317,40 @@ public class ProdutosDAO {
             throw new RuntimeException(e);
         }
 
+    }
+    
+    public Produtos verificaEstoque(int id){
+        
+        try {
+
+            //1 passo criar a lista
+            Produtos obj = new Produtos();
+
+            //2 passo - criar o sql , organizar e executar.
+            String sql = "select * from tb_produtos where id = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                
+
+                obj.setId(rs.getInt("id"));
+                obj.setQtd_estoque(rs.getInt("qtd_estoque"));
+
+                
+            }
+
+            return obj;
+
+        } catch (SQLException erro) {
+
+            JOptionPane.showMessageDialog(null, "Erro :" + erro);
+            return null;
+        }
+        
+        
     }
 }

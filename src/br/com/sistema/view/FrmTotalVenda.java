@@ -75,6 +75,11 @@ public class FrmTotalVenda extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         txtdata.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtdata.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtdataActionPerformed(evt);
+            }
+        });
         txtdata.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtdataKeyPressed(evt);
@@ -116,7 +121,7 @@ public class FrmTotalVenda extends javax.swing.JFrame {
                         .addComponent(btnconsultar))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel11)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(27, 27, 27)
                         .addComponent(txtotalvenda, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(126, Short.MAX_VALUE))
         );
@@ -129,11 +134,11 @@ public class FrmTotalVenda extends javax.swing.JFrame {
                     .addComponent(txtdata, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel10)
                     .addComponent(btnconsultar))
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
                     .addComponent(txtotalvenda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 55, Short.MAX_VALUE))
+                .addGap(0, 52, Short.MAX_VALUE))
         );
 
         pack();
@@ -172,6 +177,28 @@ public class FrmTotalVenda extends javax.swing.JFrame {
     private void txtotalvendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtotalvendaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtotalvendaActionPerformed
+
+    private void txtdataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdataActionPerformed
+        // TODO add your handling code here:
+        try {
+            
+            //Receber a data
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate data_venda = LocalDate.parse(txtdata.getText(), formato);
+            
+            double total_venda;
+            
+            VendasDAO dao = new VendasDAO();
+            total_venda = dao.retornaTotalVendaPorData(data_venda);
+            
+            txtotalvenda.setText(String.valueOf(total_venda));
+            
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(null, "Informe uma data corretamente." + e);
+                   
+        }
+    }//GEN-LAST:event_txtdataActionPerformed
 
     /**
      * @param args the command line arguments

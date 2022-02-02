@@ -17,6 +17,9 @@ public class Vendas {
     private String data_venda;
     private double total_venda;
     private String obs;    
+    private int id_funcionario;
+    private double comissao;
+    
     
     //getters e setters
 
@@ -58,5 +61,21 @@ public class Vendas {
 
     public void setObs(String obs) {
         this.obs = obs;
+    }
+    
+    public int getIdFunc () {
+        return id_funcionario;
+    }
+    
+    public void setIdFunc (int id) {
+        this.id_funcionario = id;
+    }
+    
+    public double getComissao() {
+        return comissao;
+    }
+
+    public void setComissao(double comissao) {
+        this.comissao = comissao;
     }
 }

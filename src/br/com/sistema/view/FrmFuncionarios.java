@@ -12,13 +12,18 @@ import br.com.sistema.model.Funcionarios;
 import br.com.sistema.model.Utilitarios;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -64,8 +69,181 @@ public class FrmFuncionarios extends javax.swing.JFrame {
         initComponents();
         this.getContentPane().setBackground(Color.WHITE);
 
-    }
+        //botão novo
+        Action novoAction = new AbstractAction("novo") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
+                limpaDados();
+            }
+
+        };
+
+        String key = "novo";
+
+        btnnovo.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_N, KeyEvent.CTRL_DOWN_MASK), key);
+        btnnovo.getActionMap().put(key, novoAction);
+
+        
+        //botão salvar
+        Action salvarAction = new AbstractAction("salvar") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                salvar();
+            }
+
+        };
+        
+        btnsalvar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK), key);
+        btnsalvar.getActionMap().put(key, salvarAction);
+        
+        //botão editar
+        Action editarAction = new AbstractAction("editar") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                editar();
+            }
+
+        };
+
+        jButton3.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_E, KeyEvent.CTRL_DOWN_MASK), key);
+        jButton3.getActionMap().put(key, editarAction);
+        
+        //botão excluir
+        Action excluirAction = new AbstractAction("excluir") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                excluir();
+            }
+
+        };
+
+        jButton4.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK), key);
+        jButton4.getActionMap().put(key, excluirAction);
+    }
+    
+    
+    
+    
+    
+    
+    
+    //botão novo
+    public void limpaDados(){
+        new Utilitarios().LimpaTela(painel_dados);
+    }
+    
+    //botão pesquisar
+    public void pesquisar(){
+        String nome = "%" + txtpesquisa.getText() + "%";
+
+        FuncionariosDAO dao = new FuncionariosDAO();
+        List<Funcionarios> lista = dao.listarFuncionariosPorNome(nome);
+
+        DefaultTableModel dados = (DefaultTableModel) tabelaFuncionarios.getModel();
+        dados.setNumRows(0);
+
+        for (Funcionarios c : lista) {
+            dados.addRow(new Object[]{
+                c.getId(),
+                c.getNome(),
+                c.getRg(),
+                c.getCpf(),
+                c.getEmail(),
+                c.getSenhaCriptografada(),
+                c.getCargo(),
+                c.getNivel_acesso(),
+                c.getTelefone(),
+                c.getCelular(),
+                c.getCep(),
+                c.getEndereco(),
+                c.getNumero(),
+                c.getComplemento(),
+                c.getBairro(),
+                c.getCidade(),
+                c.getUf()
+            });
+
+        }
+    }
+    
+    //botão salvar
+    public void salvar(){
+        Funcionarios obj = new Funcionarios();
+
+        obj.setNome(txtnome.getText());
+        obj.setRg(txtrg.getText());
+        obj.setCpf(txtcpf.getText());
+        obj.setEmail(txtemail.getText());
+
+        obj.setSenha(txtsenha.getText());
+        obj.setCargo(txtcargo.getText());
+        obj.setNivel_acesso(cbnivel.getSelectedItem().toString());
+
+        obj.setTelefone(txtfixo.getText());
+        obj.setCelular(txtcel.getText());
+        obj.setCep(txtcep.getText());
+        obj.setEndereco(txtend.getText());
+        obj.setNumero(Integer.parseInt(txtnumero.getText()));
+        obj.setComplemento(txtcomplemento.getText());
+        obj.setBairro(txtbairro.getText());
+        obj.setCidade(txtcidade.getText());
+        obj.setUf(cbuf.getSelectedItem().toString());
+
+        FuncionariosDAO dao = new FuncionariosDAO();
+
+        dao.cadastrarFuncionarios(obj);
+
+        new Utilitarios().LimpaTela(painel_dados);
+    }
+    
+    //botão editar
+    public void editar(){
+        Funcionarios obj = new Funcionarios();
+
+        obj.setNome(txtnome.getText());
+        obj.setRg(txtrg.getText());
+        obj.setCpf(txtcpf.getText());
+        obj.setEmail(txtemail.getText());
+
+        obj.setSenha(txtsenha.getText());
+        obj.setCargo(txtcargo.getText());
+        obj.setNivel_acesso(cbnivel.getSelectedItem().toString());
+
+        obj.setTelefone(txtfixo.getText());
+        obj.setCelular(txtcel.getText());
+        obj.setCep(txtcep.getText());
+        obj.setEndereco(txtend.getText());
+        obj.setNumero(Integer.parseInt(txtnumero.getText()));
+        obj.setComplemento(txtcomplemento.getText());
+        obj.setBairro(txtbairro.getText());
+        obj.setCidade(txtcidade.getText());
+        obj.setUf(cbuf.getSelectedItem().toString());
+
+        obj.setId(Integer.parseInt(txtcodigo.getText()));
+
+        FuncionariosDAO dao = new FuncionariosDAO();
+
+        dao.alterarFuncionario(obj);
+
+        new Utilitarios().LimpaTela(painel_dados);
+    }
+    
+    //botão excluir
+    public void excluir(){
+        Funcionarios obj = new Funcionarios();
+
+        obj.setId(Integer.parseInt(txtcodigo.getText()));
+
+        FuncionariosDAO dao = new FuncionariosDAO();
+
+        dao.excluirFuncionario(obj);
+        new Utilitarios().LimpaTela(painel_dados);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The content of this method is always regenerated by the Form Editor.
      */
@@ -236,6 +414,7 @@ public class FrmFuncionarios extends javax.swing.JFrame {
         txtend.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         txtcomplemento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        txtcomplemento.setName("complemento"); // NOI18N
 
         txtbairro.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -585,7 +764,8 @@ public class FrmFuncionarios extends javax.swing.JFrame {
         jTabbedPane1.addTab("Consulta de funcionários", jPanel4);
 
         btnnovo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnnovo.setText("+ Novo");
+        btnnovo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagens/novo.png"))); // NOI18N
+        btnnovo.setText("Novo");
         btnnovo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnnovoActionPerformed(evt);
@@ -714,75 +894,23 @@ public class FrmFuncionarios extends javax.swing.JFrame {
 
     private void btnpesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnpesquisarActionPerformed
         // Botao pesquisar
-        String nome = "%" + txtpesquisa.getText() + "%";
-
-        FuncionariosDAO dao = new FuncionariosDAO();
-        List<Funcionarios> lista = dao.listarFuncionariosPorNome(nome);
-
-        DefaultTableModel dados = (DefaultTableModel) tabelaFuncionarios.getModel();
-        dados.setNumRows(0);
-
-        for (Funcionarios c : lista) {
-            dados.addRow(new Object[]{
-                c.getId(),
-                c.getNome(),
-                c.getRg(),
-                c.getCpf(),
-                c.getEmail(),
-                c.getSenhaCriptografada(),
-                c.getCargo(),
-                c.getNivel_acesso(),
-                c.getTelefone(),
-                c.getCelular(),
-                c.getCep(),
-                c.getEndereco(),
-                c.getNumero(),
-                c.getComplemento(),
-                c.getBairro(),
-                c.getCidade(),
-                c.getUf()
-            });
-
-        }
-
-
+        pesquisar();
     }//GEN-LAST:event_btnpesquisarActionPerformed
 
     private void txtnomeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtnomeActionPerformed
-        // TODO add your handling code here:
+        pesquisar();
     }//GEN-LAST:event_txtnomeActionPerformed
 
     private void btnsalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnsalvarActionPerformed
-        // boto salvar
-
-        Funcionarios obj = new Funcionarios();
-
-        obj.setNome(txtnome.getText());
-        obj.setRg(txtrg.getText());
-        obj.setCpf(txtcpf.getText());
-        obj.setEmail(txtemail.getText());
-
-        obj.setSenha(txtsenha.getText());
-        obj.setCargo(txtcargo.getText());
-        obj.setNivel_acesso(cbnivel.getSelectedItem().toString());
-
-        obj.setTelefone(txtfixo.getText());
-        obj.setCelular(txtcel.getText());
-        obj.setCep(txtcep.getText());
-        obj.setEndereco(txtend.getText());
-        obj.setNumero(Integer.parseInt(txtnumero.getText()));
-        obj.setComplemento(txtcomplemento.getText());
-        obj.setBairro(txtbairro.getText());
-        obj.setCidade(txtcidade.getText());
-        obj.setUf(cbuf.getSelectedItem().toString());
-
-        FuncionariosDAO dao = new FuncionariosDAO();
-
-        dao.cadastrarFuncionarios(obj);
-
-        new Utilitarios().LimpaTela(painel_dados);
-
-
+        // botão salvar
+        Utilitarios util = new Utilitarios();
+            boolean bool = util.isAllFilled(painel_dados);
+            
+            if(bool == true){
+                salvar();
+            }else{
+                JOptionPane.showMessageDialog(null, "Verifique se todos os campos foram preenchidos");    
+            };
     }//GEN-LAST:event_btnsalvarActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -818,51 +946,19 @@ public class FrmFuncionarios extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // botao editar
-
-        Funcionarios obj = new Funcionarios();
-
-        obj.setNome(txtnome.getText());
-        obj.setRg(txtrg.getText());
-        obj.setCpf(txtcpf.getText());
-        obj.setEmail(txtemail.getText());
-
-        obj.setSenha(txtsenha.getText());
-        obj.setCargo(txtcargo.getText());
-        obj.setNivel_acesso(cbnivel.getSelectedItem().toString());
-
-        obj.setTelefone(txtfixo.getText());
-        obj.setCelular(txtcel.getText());
-        obj.setCep(txtcep.getText());
-        obj.setEndereco(txtend.getText());
-        obj.setNumero(Integer.parseInt(txtnumero.getText()));
-        obj.setComplemento(txtcomplemento.getText());
-        obj.setBairro(txtbairro.getText());
-        obj.setCidade(txtcidade.getText());
-        obj.setUf(cbuf.getSelectedItem().toString());
-
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
-
-        FuncionariosDAO dao = new FuncionariosDAO();
-
-        dao.alterarFuncionario(obj);
-
-        new Utilitarios().LimpaTela(painel_dados);
-
-
+        Utilitarios util = new Utilitarios();
+        boolean bool = util.isAllFilled(painel_dados);
+            
+        if(bool == true){
+            editar();
+        }else{
+            JOptionPane.showMessageDialog(null, "Verifique se todos os campos foram preenchidos");    
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // botao excluir
-
-        Funcionarios obj = new Funcionarios();
-
-        obj.setId(Integer.parseInt(txtcodigo.getText()));
-
-        FuncionariosDAO dao = new FuncionariosDAO();
-
-        dao.excluirFuncionario(obj);
-        new Utilitarios().LimpaTela(painel_dados);
-
+        excluir();
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void txtpesquisaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtpesquisaKeyPressed
@@ -900,8 +996,7 @@ public class FrmFuncionarios extends javax.swing.JFrame {
     }//GEN-LAST:event_txtpesquisaKeyPressed
 
     private void btnnovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnnovoActionPerformed
-        new Utilitarios().LimpaTela(painel_dados);
-
+        limpaDados();
     }//GEN-LAST:event_btnnovoActionPerformed
 
     private void cbnivelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbnivelActionPerformed

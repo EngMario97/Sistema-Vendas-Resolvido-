@@ -9,6 +9,8 @@ import br.com.sistema.view.Frmmenu;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JPanel;
@@ -25,7 +27,12 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 
 /**
@@ -67,6 +74,28 @@ public class Utilitarios {
                     break;
                 }
             }
+            
+            if (component instanceof JPasswordField &&  component.getName() == null){
+                if (((JPasswordField) component).getPassword().length == 0){
+                    bool = false;
+                    break;
+                }
+            }
+            
+            if (component instanceof JFormattedTextField &&  component.getName() == null){
+                if (((JFormattedTextField) component).getText().isEmpty()){
+                    bool = false;
+                    break;
+                }
+            }
+        
+            if (component instanceof JComboBox &&  component.getName() == null){
+                if (((JComboBox) component).getSelectedItem() == null){
+                    bool = false;
+                    break;
+                }
+            }
+        
         }
         return bool;
     }
@@ -151,6 +180,15 @@ public void JavaEmail(String email, String senha) {
         e.printStackTrace();
     }
   }
+
+    public int presenteNaTabela(DefaultTableModel tabela, int id) {
+        for (int i=0; i<tabela.getRowCount(); i++) {
+            if (Integer.parseInt(tabela.getValueAt(i, 0).toString()) == id){
+               return i;
+            }
+        }
+        return -1;
+    }
 }
         
         
