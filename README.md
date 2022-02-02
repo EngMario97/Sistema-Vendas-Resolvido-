@@ -1,1 +1,1 @@
-# Sistema_Vendas_JAVA
+# Sistema_Vendas_Java_desktop
