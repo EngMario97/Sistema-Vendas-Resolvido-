@@ -1,1 +1,6 @@
-# Sistema_Vendas_Java_desktop
+# Sistema de vendas em Java
+
+## Descrição
+
+Desenvolvido durante o curso Connect do Biopark Educação.
+
